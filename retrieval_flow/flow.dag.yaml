@@ -23,15 +23,4 @@ nodes:
     inputs:
       query: ${inputs.question}
       chat_history: ${inputs.chat_history}
-      conn: shiun-openai-connection
-  - name: analyze_contents
-    type: llm
-    source:
-      type: code
-      path: analyze_contents.jinja2
-    inputs:
-      deployment_name: shiun-gpt-35-turbo-0613-deployment
-      chat_history: ${inputs.chat_history}
-      question: ${inputs.question}
-    connection: shiun-openai-connection
-    api: chat
+      conn: todam-azure-openai-connection

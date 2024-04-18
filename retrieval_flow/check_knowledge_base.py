@@ -4,7 +4,6 @@ from typing import Any, Dict, List
 
 from dotenv import load_dotenv
 from langchain.chains.retrieval_qa.base import RetrievalQA
-from langchain_core.output_parsers import JsonOutputParser
 from langchain_openai.chat_models.azure import AzureChatOpenAI
 from langchain_openai.embeddings.azure import AzureOpenAIEmbeddings
 from langchain_pinecone.vectorstores import PineconeVectorStore
@@ -18,8 +17,9 @@ load_dotenv(dotenv_path=ENV_PATH, override=True)
 # Adding type to arguments and return value will help the system show the types properly
 # Please update the function name/signature per need
 
-index_name = "ecv-docs-index"
-AZURE_DEPLOYMENT_NAME = "shiun-gpt-35-turbo-0613-deployment"
+INDEX_NAME = os.environ.get("PINECONE_INDEX_NAME")
+AZURE_DEPLOYMENT_NAME = os.environ.get("AZURE_DEPLOYMENT_NAME")
+AZURE_EMBEDDINGS_DEPLOYMENT_NAME = os.environ.get("AZURE_EMBEDDINGS_DEPLOYMENT_NAME")
 
 
 @tool
@@ -32,14 +32,14 @@ def retrieve_qa(
     # Embeddings
     embeddings = AzureOpenAIEmbeddings(
         model="text-embedding-3-small",
-        azure_deployment="shiun-text-embedding-3-small",
+        azure_deployment=AZURE_EMBEDDINGS_DEPLOYMENT_NAME,
         azure_endpoint=conn.api_base,
         api_key=conn.api_key,
         api_version=conn.api_version,
     )
 
     docsearch = PineconeVectorStore.from_existing_index(
-        index_name=index_name, embedding=embeddings
+        index_name=INDEX_NAME, embedding=embeddings
     )
 
     # LLM
