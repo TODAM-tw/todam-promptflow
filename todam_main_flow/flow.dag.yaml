@@ -23,7 +23,7 @@ nodes:
       type: code
       path: chat.jinja2
     inputs:
-      deployment_name: shiun-gpt-35-turbo-0613-deployment
+      deployment_name: todam-gpt-35-turbo-0613
       temperature: 0.7
       top_p: 1
       max_tokens: 256
@@ -31,10 +31,8 @@ nodes:
       frequency_penalty: 0
       chat_history: ${inputs.chat_history}
       question: ${inputs.question}
-    provider: AzureOpenAI
-    connection: shiun-openai-connection
+    connection: todam-azure-openai-connection
     api: chat
-    module: promptflow.tools.aoai
     use_variants: false
   - name: summarize_contents
     type: llm
@@ -42,7 +40,7 @@ nodes:
       type: code
       path: summarize_contents.jinja2
     inputs:
-      deployment_name: shiun-gpt-35-turbo-0613-deployment
+      deployment_name: todam-gpt-35-turbo-0613
       temperature: 1
       top_p: 1
       presence_penalty: 0
@@ -50,10 +48,8 @@ nodes:
       chat_history: ${inputs.chat_history}
       question: ${inputs.question}
       query_result: ${check_knowledge_base.output}
-    provider: AzureOpenAI
-    connection: shiun-openai-connection
+    connection: todam-azure-openai-connection
     api: chat
-    module: promptflow.tools.aoai
     use_variants: false
   - name: ask_more_information
     type: llm
@@ -61,17 +57,15 @@ nodes:
       type: code
       path: ask_more_infomation.jinja2
     inputs:
-      deployment_name: shiun-gpt-35-turbo-0613-deployment
+      deployment_name: todam-gpt-35-turbo-0613
       temperature: 1
       top_p: 1
       presence_penalty: 0
       frequency_penalty: 0
       chat_history: ${inputs.chat_history}
       question: ${inputs.question}
-    provider: AzureOpenAI
-    connection: shiun-openai-connection
+    connection: todam-azure-openai-connection
     api: chat
-    module: promptflow.tools.aoai
     activate:
       when: ${is_problem_clear.output}
       is: "False"
@@ -82,17 +76,15 @@ nodes:
       type: code
       path: answer.jinja2
     inputs:
-      deployment_name: shiun-gpt-35-turbo-0613-deployment
+      deployment_name: todam-gpt-35-turbo-0613
       temperature: 1
       top_p: 1
       presence_penalty: 0
       frequency_penalty: 0
       chat_history: ${inputs.chat_history}
       answer: ${output_gateway.output}
-    provider: AzureOpenAI
-    connection: shiun-openai-connection
+    connection: todam-azure-openai-connection
     api: chat
-    module: promptflow.tools.aoai
     use_variants: false
   - name: check_knowledge_base
     type: python
@@ -102,10 +94,10 @@ nodes:
     inputs:
       query: ${inputs.question}
       chat_history: ${inputs.chat_history}
-      conn: shiun-openai-connection
+      conn: todam-azure-openai-connection
     activate:
       when: ${is_problem_clear.output}
-      is: Ture
+      is: "True"
     aggregation: false
   - name: output_gateway
     type: python
