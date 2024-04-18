@@ -174,3 +174,7 @@ langchain-docs/
 !.promptflow/flow.tools.json
 .runs/
 env.local
+*/.promptflow/chat.detail.json
+*/.promptflow/chat.output.json
+*/.promptflow/flow.detail.json
+*/.promptflow/flow.uihint.json
