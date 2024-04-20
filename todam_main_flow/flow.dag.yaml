@@ -17,93 +17,93 @@ outputs:
     reference: ${answer.output}
     is_chat_output: true
 nodes:
-  - name: is_problem_clear
-    type: llm
-    source:
-      type: code
-      path: chat.jinja2
-    inputs:
-      deployment_name: todam-gpt-35-turbo-0613
-      temperature: 0.7
-      top_p: 1
-      max_tokens: 256
-      presence_penalty: 0
-      frequency_penalty: 0
-      chat_history: ${inputs.chat_history}
-      question: ${inputs.question}
-    connection: todam-azure-openai-connection
-    api: chat
-    use_variants: false
-  - name: summarize_contents
-    type: llm
-    source:
-      type: code
-      path: summarize_contents.jinja2
-    inputs:
-      deployment_name: todam-gpt-35-turbo-0613
-      temperature: 1
-      top_p: 1
-      presence_penalty: 0
-      frequency_penalty: 0
-      chat_history: ${inputs.chat_history}
-      question: ${inputs.question}
-      query_result: ${check_knowledge_base.output}
-    connection: todam-azure-openai-connection
-    api: chat
-    use_variants: false
-  - name: ask_more_information
-    type: llm
-    source:
-      type: code
-      path: ask_more_infomation.jinja2
-    inputs:
-      deployment_name: todam-gpt-35-turbo-0613
-      temperature: 1
-      top_p: 1
-      presence_penalty: 0
-      frequency_penalty: 0
-      chat_history: ${inputs.chat_history}
-      question: ${inputs.question}
-    connection: todam-azure-openai-connection
-    api: chat
-    activate:
-      when: ${is_problem_clear.output}
-      is: "False"
-    use_variants: false
-  - name: answer
-    type: llm
-    source:
-      type: code
-      path: answer.jinja2
-    inputs:
-      deployment_name: todam-gpt-35-turbo-0613
-      temperature: 1
-      top_p: 1
-      presence_penalty: 0
-      frequency_penalty: 0
-      chat_history: ${inputs.chat_history}
-      answer: ${output_gateway.output}
-    connection: todam-azure-openai-connection
-    api: chat
-    use_variants: false
-  - name: check_knowledge_base
-    type: python
-    source:
-      type: code
-      path: check_knowledge_base.py
-    inputs:
-      query: ${inputs.question}
-      chat_history: ${inputs.chat_history}
-      conn: todam-azure-openai-connection
-    activate:
-      when: ${is_problem_clear.output}
-      is: "True"
-    aggregation: false
-  - name: output_gateway
-    type: python
-    source:
-      type: code
-      path: output_gateway.py
-    inputs:
-      summarize_contents_output: ${summarize_contents.output}
-      ask_more_information_output: ${ask_more_information.output}
+- name: is_problem_clear
+  type: llm
+  source:
+    type: code
+    path: chat.jinja2
+  inputs:
+    deployment_name: todam-gpt-35-turbo-0613
+    temperature: 0.7
+    top_p: 1
+    max_tokens: 256
+    presence_penalty: 0
+    frequency_penalty: 0
+    chat_history: ${inputs.chat_history}
+    question: ${inputs.question}
+  connection: todam-azure-openai-connection
+  api: chat
+  use_variants: false
+- name: summarize_contents
+  type: llm
+  source:
+    type: code
+    path: summarize_contents.jinja2
+  inputs:
+    deployment_name: todam-gpt-35-turbo-0613
+    temperature: 1
+    top_p: 1
+    presence_penalty: 0
+    frequency_penalty: 0
+    chat_history: ${inputs.chat_history}
+    question: ${inputs.question}
+    query_result: ${check_knowledge_base.output}
+  connection: todam-azure-openai-connection
+  api: chat
+  use_variants: false
+- name: ask_more_information
+  type: llm
+  source:
+    type: code
+    path: ask_more_infomation.jinja2
+  inputs:
+    deployment_name: todam-gpt-35-turbo-0613
+    temperature: 1
+    top_p: 1
+    presence_penalty: 0
+    frequency_penalty: 0
+    chat_history: ${inputs.chat_history}
+    question: ${inputs.question}
+  connection: todam-azure-openai-connection
+  api: chat
+  activate:
+    when: ${is_problem_clear.output}
+    is: "False"
+  use_variants: false
+- name: answer
+  type: llm
+  source:
+    type: code
+    path: answer.jinja2
+  inputs:
+    deployment_name: todam-gpt-35-turbo-0613
+    temperature: 1
+    top_p: 1
+    presence_penalty: 0
+    frequency_penalty: 0
+    chat_history: ${inputs.chat_history}
+    answer: ${output_gateway.output}
+  connection: todam-azure-openai-connection
+  api: chat
+  use_variants: false
+- name: check_knowledge_base
+  type: python
+  source:
+    type: code
+    path: check_knowledge_base.py
+  inputs:
+    query: ${inputs.question}
+    chat_history: ${inputs.chat_history}
+    conn: todam-azure-openai-connection
+  activate:
+    when: ${is_problem_clear.output}
+    is: "True"
+  aggregation: false
+- name: output_gateway
+  type: python
+  source:
+    type: code
+    path: output_gateway.py
+  inputs:
+    summarize_contents_output: ${summarize_contents.output}
+    ask_more_information_output: ${ask_more_information.output}

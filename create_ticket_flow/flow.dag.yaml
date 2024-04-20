@@ -1,30 +1,63 @@
-$schema: https://azuremlschemas.azureedge.net/promptflow/latest/Flow.schema.json
+id: template_chat_flow
+name: Template Chat Flow
+environment:
+  python_requirements_txt: requirements.txt
 inputs:
   chat_history:
     type: list
-    is_chat_history: true
     default: []
-  question:
-    type: string
-    is_chat_input: true
-outputs:
   answer:
     type: string
-    reference: ${chat.output}
-    is_chat_output: true
+    default: >-
+      User: My EC2 is broken, The error status is 504, give me some solutions, I
+      have checked VPC and the status is running.
+
+
+
+      Bot: I'm sorry to hear that you're facing issues with your EC2 instance. It seems that you are receiving a 504 error status, indicating a gateway timeout. Based on the information you provided, you have already checked the VPC and confirmed that it is running. 
+
+
+      To troubleshoot and resolve this issue, I would recommend the following steps:
+
+
+      1. Check the health of your EC2 instance: Make sure that the EC2 instance is running and accessible. You can verify this by connecting to the instance via SSH or checking the instance's status in the EC2 console.
+
+
+      2. Review the load balancer configuration: If your EC2 instance is part of a load balancer, ensure that the load balancer is properly configured and distributing traffic correctly. Check the load balancer's listener rules, target group settings, and health checks.
+
+
+      3. Investigate the application or server logs: Look for any error messages or warnings in the logs of your application or server. These logs can provide insights into what might be causing the gateway timeout.
+
+
+      4. Monitor resource utilization: Check the CPU, memory, and disk usage of your EC2 instance. High resource utilization can cause performance issues and result in gateway timeouts. Consider scaling up the instance size or optimizing your application to handle the traffic more efficiently.
+
+
+      5. Verify network connectivity: Ensure that there are no network connectivity issues between your EC2 instance and any external services it depends on. Check the security group settings and ensure that the necessary ports are open for inbound and outbound traffic.
+
+
+      If these steps don't resolve the issue, it would be helpful to provide more specific details, such as the exact error message or any relevant logs. That way, I can provide more targeted guidance to assist you in resolving the problem.
+outputs:
+  ticket:
+    type: string
+    reference: ${send_ticket.output}
 nodes:
-- name: chat
+- name: create_ticket
   type: llm
   source:
     type: code
-    path: chat.jinja2
+    path: create_ticket.jinja2
   inputs:
-    deployment_name: gpt-35-turbo
-    max_tokens: '256'
-    temperature: '0.7'
+    deployment_name: todam-gpt-35-turbo-0613
+    temperature: 1
     chat_history: ${inputs.chat_history}
-    question: ${inputs.question}
+    question: ${inputs.answer}
+  connection: todam-azure-openai-connection
   api: chat
-  connection: open_ai_connection
-environment:
-  python_requirements_txt: requirements.txt
+- name: send_ticket
+  type: python
+  source:
+    type: code
+    path: send_ticket.py
+  inputs:
+    answer: ${create_ticket.output}
+  aggregation: false
