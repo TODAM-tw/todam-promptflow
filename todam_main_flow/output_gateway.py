@@ -6,9 +6,9 @@ from promptflow.tools.aoai import tool
 # Please update the function name/signature per need
 @tool
 def my_python_tool(
-    summarize_contents_output: str, ask_more_information_output: str
+    check_knowledge_base_output: str, ask_more_information_output: str
 ) -> str:
-    if summarize_contents_output is not None:
-        return summarize_contents_output
+    if check_knowledge_base_output is not None:
+        return check_knowledge_base_output
 
     return ask_more_information_output

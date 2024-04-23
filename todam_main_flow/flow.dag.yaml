@@ -34,23 +34,19 @@ nodes:
   connection: todam-azure-openai-connection
   api: chat
   use_variants: false
-- name: summarize_contents
-  type: llm
+- name: check_knowledge_base
+  type: python
   source:
     type: code
-    path: summarize_contents.jinja2
+    path: check_knowledge_base.py
   inputs:
-    deployment_name: todam-gpt-35-turbo-0613
-    temperature: 1
-    top_p: 1
-    presence_penalty: 0
-    frequency_penalty: 0
     chat_history: ${inputs.chat_history}
-    question: ${inputs.question}
-    query_result: ${check_knowledge_base.output}
-  connection: todam-azure-openai-connection
-  api: chat
-  use_variants: false
+    query: ${inputs.question}
+    conn: todam-azure-openai-connection
+  activate:
+    when: ${is_problem_clear.output}
+    is: "True"
+  aggregation: false
 - name: ask_more_information
   type: llm
   source:
@@ -70,6 +66,14 @@ nodes:
     when: ${is_problem_clear.output}
     is: "False"
   use_variants: false
+- name: output_gateway
+  type: python
+  source:
+    type: code
+    path: output_gateway.py
+  inputs:
+    ask_more_information_output: ${ask_more_information.output}
+    check_knowledge_base_output: ${check_knowledge_base.output}
 - name: answer
   type: llm
   source:
@@ -82,28 +86,26 @@ nodes:
     presence_penalty: 0
     frequency_penalty: 0
     chat_history: ${inputs.chat_history}
-    answer: ${output_gateway.output}
+    answer: ${output_gateway.output.result}
   connection: todam-azure-openai-connection
   api: chat
   use_variants: false
-- name: check_knowledge_base
-  type: python
+- name: create_ticket
+  type: llm
   source:
     type: code
-    path: check_knowledge_base.py
+    path: create_ticket.jinja2
   inputs:
-    query: ${inputs.question}
+    deployment_name: todam-gpt-35-turbo-0613
     chat_history: ${inputs.chat_history}
-    conn: todam-azure-openai-connection
-  activate:
-    when: ${is_problem_clear.output}
-    is: "True"
-  aggregation: false
-- name: output_gateway
+    question: ${inputs.question}
+    answer: ${answer.output}
+  connection: todam-azure-openai-connection
+  api: chat
+- name: send_ticket
   type: python
   source:
     type: code
-    path: output_gateway.py
+    path: send_ticket.py
   inputs:
-    summarize_contents_output: ${summarize_contents.output}
-    ask_more_information_output: ${ask_more_information.output}
+    answer: ${create_ticket.output}
