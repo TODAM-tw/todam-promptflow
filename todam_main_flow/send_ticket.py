@@ -16,15 +16,21 @@ load_dotenv(dotenv_path=ENV_PATH, override=True)
 API_ENDPOINT = os.environ.get("API_ENDPOINT")
 
 
+
 @tool
 def send_ticket(answer: str) -> str:
-    data = json.loads(answer)
+    try:
+        data = json.loads(answer)
+    except ValueError:
+        print("Ticket creation failed (invalid JSON input).")
+        return answer
+        
     api_url = API_ENDPOINT
     response = requests.post(api_url, json=data)
 
     if response.status_code == 200 or response.status_code == 201:
         print("Ticket created successfully!")
-        return response.status_code
+        return str(response.status_code)
     else:
         print(f"Ticket creation failed (status {response.status_code}).")
-        return response.status_code
+        return str(response.status_code)
