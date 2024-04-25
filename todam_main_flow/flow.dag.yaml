@@ -14,7 +14,7 @@ inputs:
 outputs:
   answer:
     type: string
-    reference: ${answer.output}
+    reference: ${output_gateway.output}
     is_chat_output: true
 nodes:
 - name: is_problem_clear
@@ -73,23 +73,7 @@ nodes:
     path: output_gateway.py
   inputs:
     ask_more_information_output: ${ask_more_information.output}
-    check_knowledge_base_output: ${check_knowledge_base.output}
-- name: answer
-  type: llm
-  source:
-    type: code
-    path: answer.jinja2
-  inputs:
-    deployment_name: todam-gpt-35-turbo-0613
-    temperature: 1
-    top_p: 1
-    presence_penalty: 0
-    frequency_penalty: 0
-    chat_history: ${inputs.chat_history}
-    answer: ${output_gateway.output.result}
-  connection: todam-azure-openai-connection
-  api: chat
-  use_variants: false
+    check_knowledge_base_output: ${check_knowledge_base.output.result}
 - name: create_ticket
   type: llm
   source:
@@ -99,7 +83,7 @@ nodes:
     deployment_name: todam-gpt-35-turbo-0613
     chat_history: ${inputs.chat_history}
     question: ${inputs.question}
-    answer: ${answer.output}
+    answer: ${output_gateway.output}
   connection: todam-azure-openai-connection
   api: chat
 - name: send_ticket

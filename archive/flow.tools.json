@@ -17,6 +17,27 @@
       },
       "source": "chat.jinja2"
     },
+    "summarize_contents.jinja2": {
+      "type": "llm",
+      "inputs": {
+        "chat_history": {
+          "type": [
+            "string"
+          ]
+        },
+        "question": {
+          "type": [
+            "string"
+          ]
+        },
+        "query_result": {
+          "type": [
+            "string"
+          ]
+        }
+      },
+      "source": "summarize_contents.jinja2"
+    },
     "ask_more_infomation.jinja2": {
       "type": "llm",
       "inputs": {
@@ -32,6 +53,22 @@
         }
       },
       "source": "ask_more_infomation.jinja2"
+    },
+    "answer.jinja2": {
+      "type": "llm",
+      "inputs": {
+        "chat_history": {
+          "type": [
+            "string"
+          ]
+        },
+        "answer": {
+          "type": [
+            "string"
+          ]
+        }
+      },
+      "source": "answer.jinja2"
     },
     "check_knowledge_base.py": {
       "type": "python",
