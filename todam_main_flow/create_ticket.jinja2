@@ -5,11 +5,11 @@
 
 **Notes**: "The details should include the transcript of conversations between the customer and the assistant. The solutions should be based on the whole."
 
-**Exceptions**: "If you don't know the answer, the value must be None, you shouldn't give the information that you don't know, especially ticketId and customerId."
+**Exceptions**: "If you don't know the answer, the value must be null, you shouldn't give the information that you don't know, especially ticketId and customerId."
 
 **Rules**: "{
-            "ticketId": None,
-            "customerId": None,
+            "ticketId": null,
+            "customerId": null,
             "outline": "outline",
             "details": [
                 {"customer": ${inputs.question}, "assistant": ${output_gateway.output.result}},
