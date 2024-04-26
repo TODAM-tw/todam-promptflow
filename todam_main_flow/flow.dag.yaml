@@ -86,6 +86,9 @@ nodes:
     answer: ${output_gateway.output}
   connection: todam-azure-openai-connection
   api: chat
+  activate:
+    when: ${is_problem_clear.output}
+    is: "True"
 - name: send_ticket
   type: python
   source:
