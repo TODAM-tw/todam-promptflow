@@ -1,7 +1,7 @@
 {
   "package": {},
   "code": {
-    "chat.jinja2": {
+    "is_problem_clear.jinja2": {
       "type": "llm",
       "inputs": {
         "chat_history": {
@@ -15,7 +15,7 @@
           ]
         }
       },
-      "source": "chat.jinja2"
+      "source": "is_problem_clear.jinja2"
     },
     "ask_more_infomation.jinja2": {
       "type": "llm",
