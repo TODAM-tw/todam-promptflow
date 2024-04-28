@@ -21,7 +21,7 @@ nodes:
   type: llm
   source:
     type: code
-    path: chat.jinja2
+    path: is_problem_clear.jinja2
   inputs:
     deployment_name: todam-gpt-35-turbo-0613
     temperature: 0.7
@@ -86,6 +86,9 @@ nodes:
     answer: ${output_gateway.output}
   connection: todam-azure-openai-connection
   api: chat
+  activate:
+    when: ${is_problem_clear.output}
+    is: "True"
 - name: send_ticket
   type: python
   source:
