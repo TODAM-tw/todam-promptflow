@@ -7,22 +7,24 @@
 
 **Exceptions**: "If you don't know the answer, the value must be null, you shouldn't give the information that you don't know, especially Case Id and Start Date. If the conversation is based on Traditional Chinese you must summarize in the same language."
 
-**Rules**: "Use markdown format, and the ticket must include the following details: Subject, Case Id, Start Date, Submitted by, each newline symbol (/n) must be replaced by `<br>`."
+**Rules**: "Use json format, and the ticket must include the following details: Subject, Case Id, Start Date, Submitted by."
 
-**Example 1**: "
-    **Subject**: [Subject]<br>
-    **Case Id**: [unique Case Id]<br>
-    **Start Date**: [current date]<br>
-    **Transcript**:
-    ```
-    Submitted by: Customer
-    {content}
-    ```
-    ```
-    Submitted by: TAM
-    {content}
-    ``` 
-    etc."
+**Example**: "{
+  "subject": "[Subject]",
+  "caseId": "[unique Case Id]", 
+  "startDate": "[current date]",
+  "transcript": [
+    {
+      "Submitted by": "Customer",
+      "content": "{content}"
+    },
+    {
+      "roSubmitted byle": "TAM",
+      "content": "{content}"
+    },
+    etc...
+  ]
+}"
 
 # user:
 {{transcript}}
