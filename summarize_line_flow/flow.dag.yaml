@@ -11,13 +11,6 @@ outputs:
     type: string
     reference: ${summarize_line.output}
 nodes:
-- name: input_preprocess
-  type: python
-  source:
-    type: code
-    path: input_preprocess.py
-  inputs:
-    question: ${inputs.question}
 - name: summarize_line
   type: llm
   source:
@@ -25,6 +18,6 @@ nodes:
     path: summarize_line.jinja2
   inputs:
     deployment_name: todam-gpt-35-turbo-0613
-    transcript: ${input_preprocess.output}
+    transcript: ${inputs.question}
   connection: todam-azure-openai-connection
   api: chat
