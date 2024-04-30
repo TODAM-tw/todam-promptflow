@@ -1,0 +1,30 @@
+id: template_chat_flow
+name: Template Chat Flow
+environment:
+  python_requirements_txt: requirements.txt
+inputs:
+  question:
+    type: string
+    default: ""
+outputs:
+  summarize_output:
+    type: string
+    reference: ${summarize_line.output}
+nodes:
+- name: input_preprocess
+  type: python
+  source:
+    type: code
+    path: input_preprocess.py
+  inputs:
+    question: ${inputs.question}
+- name: summarize_line
+  type: llm
+  source:
+    type: code
+    path: summarize_line.jinja2
+  inputs:
+    deployment_name: todam-gpt-35-turbo-0613
+    transcript: ${input_preprocess.output}
+  connection: todam-azure-openai-connection
+  api: chat

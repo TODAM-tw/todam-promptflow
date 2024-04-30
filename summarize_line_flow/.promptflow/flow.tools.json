@@ -1,0 +1,28 @@
+{
+  "package": {},
+  "code": {
+    "summarize_line.jinja2": {
+      "type": "llm",
+      "inputs": {
+        "transcript": {
+          "type": [
+            "string"
+          ]
+        }
+      },
+      "source": "summarize_line.jinja2"
+    },
+    "input_preprocess.py": {
+      "type": "python",
+      "inputs": {
+        "question": {
+          "type": [
+            "string"
+          ]
+        }
+      },
+      "source": "input_preprocess.py",
+      "function": "input_preprocess_tool"
+    }
+  }
+}
