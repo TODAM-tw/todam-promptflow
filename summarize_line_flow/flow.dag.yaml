@@ -5,14 +5,7 @@ environment:
 inputs:
   line_log:
     type: string
-    default: '{"Tickets":[{"Role":"Client","Description":"我们的 Amazon RDS
-      数据库实例出现了性能问题。应用程序与数据库之间的查询延迟增加，导致用户体验下降。我们已经检查了数据库的状态和查询性能，但无法确定原因。需要紧急协助来恢复数据库的性能。"},{"Role":"TAM","Description":"已经注意到了
-      Amazon RDS 数据库实例的问题。以下是解决问题的计划："},{"Role":"TAM","Description":"1.
-      实例性能分析：\n- 对数据库实例进行性能分析，包括 CPU、内存和磁盘利用率。\n-
-      监视数据库连接和查询执行计划，以识别性能瓶颈。"},{"Role":"TAM","Description":"2. 查询优化建议：\n-
-      提供针对查询性能优化的建议和最佳实践。\n-
-      分析慢查询日志，并提供针对慢查询的优化建议。"},{"Role":"Client","Description":"我们将按照所述的故障排除步骤进行。我们已经检查了数据库实例的性能，但问题仍然存在。我们将提供访问慢查询日志以进行进一步分析。"},{"Role":"TAM","Description":"您是否可以提供访问
-      Amazon RDS 数据库实例的慢查询日志？此外，请分享在查询执行期间观察到的任何具体性能问题。"}]}'
+    default: ""
 outputs:
   result:
     type: string
