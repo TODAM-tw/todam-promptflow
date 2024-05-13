@@ -1,89 +1,16 @@
 {
   "package": {},
   "code": {
-    "detect_language.py": {
-      "type": "python",
-      "inputs": {
-        "line_log": {
-          "type": [
-            "string"
-          ]
-        }
-      },
-      "source": "detect_language.py",
-      "function": "detect_language"
-    },
-    "translate_into_english.jinja2": {
-      "type": "llm",
-      "inputs": {
-        "line_log": {
-          "type": [
-            "string"
-          ]
-        }
-      },
-      "source": "translate_into_english.jinja2"
-    },
-    "summarize_gateway.py": {
-      "type": "python",
-      "inputs": {
-        "is_english": {
-          "type": [
-            "string"
-          ]
-        },
-        "is_chinese": {
-          "type": [
-            "string"
-          ]
-        }
-      },
-      "source": "summarize_gateway.py",
-      "function": "summarize_gateway"
-    },
     "summarize_line.jinja2": {
       "type": "llm",
       "inputs": {
-        "line_log_english": {
+        "line_log": {
           "type": [
             "string"
           ]
         }
       },
       "source": "summarize_line.jinja2"
-    },
-    "translate_into_chinese.jinja2": {
-      "type": "llm",
-      "inputs": {
-        "line_log_english": {
-          "type": [
-            "string"
-          ]
-        },
-        "detect_language": {
-          "type": [
-            "string"
-          ]
-        }
-      },
-      "source": "translate_into_chinese.jinja2"
-    },
-    "output_gateway.py": {
-      "type": "python",
-      "inputs": {
-        "english_result": {
-          "type": [
-            "string"
-          ]
-        },
-        "chinese_result": {
-          "type": [
-            "string"
-          ]
-        }
-      },
-      "source": "output_gateway.py",
-      "function": "output_gateway"
     }
   }
 }

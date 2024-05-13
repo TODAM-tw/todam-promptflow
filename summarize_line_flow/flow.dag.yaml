@@ -9,36 +9,8 @@ inputs:
 outputs:
   result:
     type: string
-    reference: ${output_gateway.output}
+    reference: ${summarize_line.output}
 nodes:
-- name: detect_language
-  type: python
-  source:
-    type: code
-    path: detect_language.py
-  inputs:
-    line_log: ${inputs.line_log}
-- name: translate_into_english
-  type: llm
-  source:
-    type: code
-    path: translate_into_english.jinja2
-  inputs:
-    deployment_name: todam-gpt-35-turbo-0613
-    line_log: ${inputs.line_log}
-  connection: todam-azure-openai-connection
-  api: chat
-  activate:
-    when: ${detect_language.output}
-    is: Chinese
-- name: summarize_gateway
-  type: python
-  source:
-    type: code
-    path: summarize_gateway.py
-  inputs:
-    is_english: ${detect_language.output}
-    is_chinese: ${translate_into_english.output}
 - name: summarize_line
   type: llm
   source:
@@ -46,28 +18,6 @@ nodes:
     path: summarize_line.jinja2
   inputs:
     deployment_name: todam-gpt-35-turbo-0613
-    line_log_english: ${summarize_gateway.output}
+    line_log: ${inputs.line_log}
   connection: todam-azure-openai-connection
   api: chat
-- name: translate_into_chinese
-  type: llm
-  source:
-    type: code
-    path: translate_into_chinese.jinja2
-  inputs:
-    deployment_name: todam-gpt-35-turbo-0613
-    detect_language: ${detect_language.output}
-    line_log_english: ${summarize_line.output}
-  connection: todam-azure-openai-connection
-  api: chat
-  activate:
-    when: ${detect_language.output}
-    is: Chinese
-- name: output_gateway
-  type: python
-  source:
-    type: code
-    path: output_gateway.py
-  inputs:
-    chinese_result: ${translate_into_chinese.output}
-    english_result: ${summarize_line.output}
