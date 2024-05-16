@@ -1,0 +1,19 @@
+name: Claude Flow
+environment:
+  python_requirements_txt: requirements.txt
+inputs:
+  line_log:
+    type: string
+    default: Hello World
+outputs:
+  result:
+    type: string
+    reference: ${claude_sonnet.output}
+nodes:
+- name: claude_sonnet
+  type: python
+  source:
+    type: code
+    path: claude_sonnet.py
+  inputs:
+    line_log: ${inputs.line_log}
