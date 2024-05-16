@@ -175,3 +175,6 @@ langchain-docs/
 */.promptflow/*
 !.promptflow/flow.tools.json
 .runs/
+
+# Docker
+todam-docker/*
